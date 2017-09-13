@@ -22,21 +22,25 @@ function start() {
 	readProducts();
 }
 
+var table = new Table({
+    head: ['ID', 'Name', 'Price'],
+    colWidths: [5, 40, 10]
+});
+
 function readProducts() {
   console.log("Showing all products...\n");
-  connection.query("SELECT item_id, product_name, price FROM products",
+  connection.query("SELECT * FROM products",
 	function(err, res) {
-		for (var i = 0; i < res.length; i++) {
-			console.log(
-				"Product Id: " +
-				res[i].product_id +
-				" || Product Name: " +
-				res[i].product_name +
-				" || Price: " +
-				res[i].price
-			);
-		}
-	}
+		if (err) {
+          throw err;
+      	} else {
+      		for (var i = 0; i < res.length; i++) {
+                table.push([res[i].item_id, res[i].product_name, res[i].price]);
+      		}
+      		console.log(table.toString())
+        }
+	})
+}
 
 // function buyProducts() {
 //   connection.query("SELECT * FROM products", function(err, res) {
