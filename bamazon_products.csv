@@ -1,0 +1,11 @@
+item_id,product_name,department_name,price,stock_quantity
+1,SanDisk Ultra 16 GB Memory Card,Electronics,20.99,100
+2,Kindle Paperwhite E-reader,Electronics,79.99,50
+3,The Hobbit,Books,10.99,200
+4,Fitbit HR,Electronics,69.99,30
+5,Folgers K-Cups,Food,10.99,300
+6,Amazon Firestick,Electronics,39.99,10
+7,Cards Against Humanity,Games,25.99,200
+8,KitchenAid Rice Cooker,Kitchen,45.99,25
+9,Bertolli Whole Wheat Pasta,Food,2.99,300
+10,Nalgene Water Bottle,Kitchen,15.99,75
