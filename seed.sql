@@ -1,0 +1,3 @@
+USE bamazon;
+
+INSERT VALUES ()

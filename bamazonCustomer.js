@@ -11,8 +11,6 @@ var connection = mysql.createConnection({
 	socketPath: "/Applications/MAMP/tmp/mysql/mysql.sock"
 });
 
-// var itemList = read database and give an array of product list 
-
 connection.connect(function(err) {
   if (err) throw err;
   start();
@@ -20,6 +18,7 @@ connection.connect(function(err) {
 
 function start() {
 	readProducts();
+
 }
 
 var table = new Table({
@@ -37,37 +36,84 @@ function readProducts() {
       		for (var i = 0; i < res.length; i++) {
                 table.push([res[i].item_id, res[i].product_name, res[i].price]);
       		}
-      		console.log(table.toString())
+      		console.log(table.toString());
         }
+        buyProducts();
 	})
 }
 
-// function buyProducts() {
-//   connection.query("SELECT * FROM products", function(err, res) {
-//     if (err) throw err;
-//     // Log all results of the SELECT statement
-//     console.log(res);
-//     connection.end();
-//   });
+	function buyProducts() {
+	  inquirer
+	    .prompt([
+	      {
+	      name: "item",
+	      type: "input",
+	      message: "To purchase an item, enter the ID: "
+	      },
+	      {
+	      name: "stock",
+	      type: "input",
+	      message: "How many would you like to purchase?"
+	      }
+	    ])
+	    .then(function(answer) {
+	        console.log('Order received!');
+	        
+	        connection.query("SELECT * FROM products WHERE ?", { item_id: answer.item}, function(err, res) {
+					console.log("ID # " + res[0].item_id + " Product: " + res[0].product_name + " Price: " + res[0].price);
+
+				if (answer.stock > res[0].stock_quantity) {
+				console.log("Please chose fewer items, or select another product.");
+
+				} else {
+
+					console.log('Order on its way!');
+					connection.query('UPDATE products SET ? WHERE ?', 
+					[
+						{ 
+							stock_quantity: (res[0].stock_quantity - answer.stock) 
+						}, 
+						{ 
+							item_id: res[0].id 
+						}
+					],
+
+					function(err, result) {
+					console.log("You bought " + stock + " " + res[0].product_name + "(s) today! That leaves " + (res[0].stock_quantity - answer.stock) + " in stock!");
+					});
+				}
+			}
+		});
+	}); 
+
+
+// I had to move the function inside the answer function due to scope...
+
+// function checkingInventory(stock, res) {
+// 	console.log("ID # " + res[0].item_id + " Product: " + res[0].product_name + " Price: " + res[0].price);
+// 	if (answer.stock > res[0].stock_quantity) {
+// 		console.log("Please chose fewer items, or select another product.");
+// 	} else {
+//         console.log('Order on its way!');
+//         connection.query(
+//             'UPDATE products SET ? WHERE ?', 
+//             [
+// 	            { 
+// 	            	stock_quantity: (res[0].stock_quantity - answer.stock) 
+// 	            }, 
+// 	            { 
+// 	            	item_id: res[0].id 
+// 	            }
+//             ],
+//             function(err, result) {
+//                 console.log("You bought " + stock + " " + res[0].product_name + "(s) today! That leaves " + (res[0].stock_quantity - answer.stock) + " in stock!");
+//             })
+//     }
 // }
 
-// function buyProducts() {
-//   inquirer
-//     .prompt(
-//       {
-//       name: "item_id",
-//       type: "input",
-//       message: "Enter the product ID to buy it: "
-//       // choices: [{connection.database.}]
-//       },
-//     )
-//     .then(function(answer) {
-//       console.log(item_id.answer);
-
-//       // if (answer.item_id === ) {
-//       //   buyProduct();
-//       // }
-//     });
-// }
+// changing users...
+// connection.changeUser({user : 'user2'}, function(err) {
+//   if (err) throw err;
+// });
 
 // connection.end();
