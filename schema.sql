@@ -11,3 +11,4 @@ CREATE TABLE products (
   stock_quantity INT(11) NOT NULL,
   PRIMARY KEY (item_id)
 );
+
