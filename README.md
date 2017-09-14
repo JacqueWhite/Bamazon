@@ -5,7 +5,7 @@ An Amazon-like storefront utilizing MySQL.  The app takes in orders from custome
 Bamazon is a CLI store that takes you through the following process:
 
 1. Welcome to Bamazon, here are the products:
-[![Welcome](images/welcomescreen.png =500x)](#)
+[![Welcome](<img src="images/welcomescreen.png" width="500"/>)](#)
 
 2. Next, enter Product ID to purchase:
 [![Questions](images/qty.png =250x)](#)
